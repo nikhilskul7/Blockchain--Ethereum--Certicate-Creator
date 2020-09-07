@@ -14,8 +14,8 @@ contract("Certification",accounts=>{
         let result
         before(async()=>{
             result=await obj.generateCertificate('')
-        }
-    })
+        
+         } )})
       
     
  } )
