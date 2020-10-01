@@ -3,7 +3,7 @@ import Web3 from 'web3'
 //import logo from '../logo.png';
 import './App.css';
 import Certification from '../abis/Certification.json'
-
+//import Certification1 from '../contracts/Certification.sol'
 class App extends Component {
 
   async componentWillMount() {
@@ -37,6 +37,13 @@ class App extends Component {
      // const productCount = await marketplace.methods.productCount().call()
       //onsole.log(productCount.toString())
       this.setState({ loading: false})
+   /*    const id=await certification.methods.certificateCount().call()
+      console.log("working")
+      for(var i=1;i<=id;i++)
+      {
+        const cer=await certification.methods.certificates(i).call
+ */
+      
     } else {
       window.alert('Certification contract not deployed to detected network.')
       console.log(networkData)
@@ -50,16 +57,18 @@ class App extends Component {
       loading: true
       
     }
+   // this.generatecertificate=this.generatecertificate.bind(this)
 
     
   }
  
-  generateCertificate(name, courseName,orgName) {
+  generatecertificate(name, courseName,orgName) {
     this.setState({ loading: true })
-    this.state.Certification.methods.generateCertificate(name, courseName,orgName).send({ from: this.state.account })
+    this.state.certification.methods.generatecertificate(name,orgName, courseName).send({ from: this.state.account })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
+    this.generatecertificate=this.generatecertificate.bind(this)
   }
 
   render() {
@@ -75,7 +84,7 @@ class App extends Component {
           const orgName = this.orgName.value
           
           const courseName = this.courseName.value
-          this.props.generateCertificate(name, orgName,courseName)
+          this.generatecertificate(name, orgName,courseName)
         }}>
           <div className="form-group mr-sm-2">
             <input
