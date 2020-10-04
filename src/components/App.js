@@ -34,16 +34,22 @@ class App extends Component {
     if(networkData) {
       const certification = web3.eth.Contract(Certification.abi, networkData.address)
       this.setState({ certification })
-     // const productCount = await marketplace.methods.productCount().call()
-      //onsole.log(productCount.toString())
-      this.setState({ loading: false})
-   /*    const id=await certification.methods.certificateCount().call()
-      console.log("working")
-      for(var i=1;i<=id;i++)
+     //var certificatesList=[]
+     var count=await certification.methods.id().call()
+     count= count.toNumber()
+      this.setState({ count })
+      //console.log(count)
+      for(var i=1;i<=count;i++)
       {
-        const cer=await certification.methods.certificates(i).call
- */
-      
+        
+        const certificate=await certification.methods.certificates(i).call()
+        this.setState({
+          certificates: [...this.state.certificates, certificate]
+        })
+        
+
+      }
+      console.log({certificates:this.state.certificates})
     } else {
       window.alert('Certification contract not deployed to detected network.')
       console.log(networkData)
@@ -53,16 +59,20 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      certification:null,
       account: '',
+      count:0,
+      certificates:[],
       loading: true
       
     }
-   // this.generatecertificate=this.generatecertificate.bind(this)
+   
+    this.generatecertificate=this.generatecertificate.bind(this)
 
     
   }
  
-  generatecertificate(name, courseName,orgName) {
+  generatecertificate(name,orgName, courseName) {
     this.setState({ loading: true })
     this.state.certification.methods.generatecertificate(name,orgName, courseName).send({ from: this.state.account })
     .once('receipt', (receipt) => {
@@ -117,6 +127,20 @@ class App extends Component {
           <button type="submit" className="btn btn-primary">Generate Certificate</button>
 
         </form>
+        <h1>certificates</h1>
+        {this.state.certificates.map((certificate,key)=>
+        {
+          return(
+            <div>
+              <h1>name:
+                {certificate.display_name}
+                Hash Number:
+                {certificate[3]}
+              </h1>
+            </div>
+          )
+        }
+        )}
       </div>
       </div>
       
