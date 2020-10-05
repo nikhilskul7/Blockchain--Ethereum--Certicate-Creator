@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+
 import Web3 from 'web3'
 //import logo from '../logo.png';
 import './App.css';
@@ -127,17 +129,28 @@ class App extends Component {
           <button type="submit" className="btn btn-primary">Generate Certificate</button>
 
         </form>
-        <h1>certificates</h1>
+        <i><h1>certificates</h1></i>
         {this.state.certificates.map((certificate,key)=>
         {
           return(
-            <div>
-              <h1>name:
-                {certificate.display_name}
-                Hash Number:
-                {certificate[3]}
-              </h1>
+            <div className="card mb-4" key={key} >
+            <div className="card-header">
+              <big className="text-muted"><b>{certificate.display_name}</b></big>
             </div>
+            <ul id="postList" className="list-group list-group-flush">
+              <li className="list-group-item">
+                <p><b>Owner:</b>{certificate[3]}</p>
+              </li>
+              <li className="list-group-item">
+                <p><b>Organization:</b>{certificate[2]}</p>
+              </li>
+              <li className="list-group-item">
+                <p><b>Course:</b>{certificate[1]}</p>
+              </li>
+              
+            </ul>
+          </div>
+        
           )
         }
         )}
